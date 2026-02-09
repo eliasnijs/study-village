@@ -135,7 +135,7 @@ Based on this comprehensive information, provide:
 Format your response in clear sections with headers. Be specific, honest, and actionable. Reference their actual profile details and conversations.`;
 
         const completion = await anthropic.messages.create({
-            model: "claude-3-5-sonnet-20241022",
+            model: "claude-sonnet-4-20250514",
             max_tokens: 1024,
             system: 'IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, hashtags for headers, or special formatting. Write naturally as if speaking in a casual conversation. Use line breaks for structure but no special characters for formatting.',
             messages: [{ role: 'user', content: prompt }]

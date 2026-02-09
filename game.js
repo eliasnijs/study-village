@@ -10,6 +10,12 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
+// Camera offset for following player
+const camera = {
+    x: 0,
+    y: 0
+};
+
 // Game state
 const player = {
     x: 700,  // Start in center
@@ -19,6 +25,27 @@ const player = {
     speed: 3,
     color: '#ff5722'
 };
+
+// World size
+const world = {
+    width: 1600,
+    height: 800
+};
+
+// Generate static flower positions once
+const flowers = [];
+for (let i = 0; i < 30; i++) {
+    const x = Math.random() * world.width;
+    const y = Math.random() * world.height;
+    // Avoid roads
+    if ((y < 235 || y > 325) && (x < 255 || x > 325) && (x < 1105 || x > 1175)) {
+        flowers.push({
+            x: x,
+            y: y,
+            color: ['#e91e63', '#9c27b0', '#ff5722', '#ffeb3b'][Math.floor(Math.random() * 4)]
+        });
+    }
+}
 
 // Professor cluster (left side - Academic Center)
 const professors = [
@@ -393,26 +420,43 @@ function updatePlayer() {
         player.y = Math.max(0, player.y - player.speed);
     }
     if (keys['arrowdown'] || keys['s']) {
-        player.y = Math.min(canvas.height - player.height, player.y + player.speed);
+        player.y = Math.min(world.height - player.height, player.y + player.speed);
     }
     if (keys['arrowleft'] || keys['a']) {
         player.x = Math.max(0, player.x - player.speed);
     }
     if (keys['arrowright'] || keys['d']) {
-        player.x = Math.min(canvas.width - player.width, player.x + player.speed);
+        player.x = Math.min(world.width - player.width, player.x + player.speed);
     }
+}
+
+// Update camera to follow player
+function updateCamera() {
+    // Center camera on player
+    camera.x = player.x - canvas.width / 2 + player.width / 2;
+    camera.y = player.y - canvas.height / 2 + player.height / 2;
+
+    // Clamp camera to world bounds
+    camera.x = Math.max(0, Math.min(world.width - canvas.width, camera.x));
+    camera.y = Math.max(0, Math.min(world.height - canvas.height, camera.y));
 }
 
 // Draw everything
 function draw() {
+    // Save context state
+    ctx.save();
+
+    // Apply camera transform
+    ctx.translate(-camera.x, -camera.y);
+
     // Clear canvas - grass background
     ctx.fillStyle = '#6fa352';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, world.width, world.height);
 
     // Draw grass pattern
     ctx.fillStyle = '#7cb342';
-    for (let i = 0; i < canvas.width; i += 20) {
-        for (let j = 0; j < canvas.height; j += 20) {
+    for (let i = 0; i < world.width; i += 20) {
+        for (let j = 0; j < world.height; j += 20) {
             if (Math.random() > 0.7) {
                 ctx.fillRect(i, j, 2, 2);
             }
@@ -422,11 +466,11 @@ function draw() {
     // Draw roads/paths
     // Main horizontal road
     ctx.fillStyle = '#8d8d8d';
-    ctx.fillRect(0, 240, canvas.width, 80);
+    ctx.fillRect(0, 240, world.width, 80);
 
     // Road stripes
     ctx.fillStyle = '#ffeb3b';
-    for (let i = 0; i < canvas.width; i += 60) {
+    for (let i = 0; i < world.width; i += 60) {
         ctx.fillRect(i, 277, 30, 6);
     }
 
@@ -455,8 +499,8 @@ function draw() {
 
     // Sidewalks
     ctx.fillStyle = '#b8b8b8';
-    ctx.fillRect(0, 235, canvas.width, 5);
-    ctx.fillRect(0, 320, canvas.width, 5);
+    ctx.fillRect(0, 235, world.width, 5);
+    ctx.fillRect(0, 320, world.width, 5);
     ctx.fillRect(255, 0, 5, 240);
     ctx.fillRect(320, 0, 5, 240);
     ctx.fillRect(1105, 100, 5, 180);
@@ -484,12 +528,40 @@ function draw() {
     drawTree(440, 120);
     drawTree(120, 340);
     drawTree(440, 340);
+    drawTree(280, 350);
 
     // Trees around University Row
     drawTree(980, 120);
     drawTree(1300, 120);
     drawTree(980, 360);
     drawTree(1300, 360);
+    drawTree(1140, 360);
+
+    // Additional decorative trees
+    drawTree(600, 150);
+    drawTree(850, 200);
+    drawTree(650, 380);
+    drawTree(900, 420);
+    drawTree(50, 180);
+    drawTree(50, 360);
+    drawTree(1500, 180);
+    drawTree(1500, 380);
+
+    // Draw flowers
+    const drawFlower = (x, y, color) => {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#f9a825';
+        ctx.beginPath();
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fill();
+    };
+
+    flowers.forEach(flower => {
+        drawFlower(flower.x, flower.y, flower.color);
+    });
 
     // Area signs
     // Academic Center sign
@@ -603,6 +675,9 @@ function draw() {
     ctx.beginPath();
     ctx.arc(player.x + 16, player.y + 18, 4, 0, Math.PI);
     ctx.stroke();
+
+    // Restore context state (removes camera transform for UI elements)
+    ctx.restore();
 }
 
 // Skill Tree / Inventory Modal Management
@@ -1048,6 +1123,7 @@ function renderSkillTree() {
 // Game loop
 function gameLoop() {
     updatePlayer();
+    updateCamera();
     draw();
     requestAnimationFrame(gameLoop);
 }
