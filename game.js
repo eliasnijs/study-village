@@ -12,20 +12,21 @@ window.addEventListener('resize', resizeCanvas);
 
 // Game state
 const player = {
-    x: 400,
-    y: 300,
+    x: 700,  // Start in center
+    y: 260,
     width: 32,
     height: 32,
     speed: 3,
     color: '#ff5722'
 };
 
+// Professor cluster (left side - Academic Center)
 const professors = [
     {
         id: 'cs',
         name: 'Prof. Ada Code',
         x: 200,
-        y: 150,
+        y: 200,
         width: 32,
         height: 32,
         color: '#2196f3',
@@ -36,8 +37,8 @@ const professors = [
     {
         id: 'bio',
         name: 'Prof. Darwin Green',
-        x: 600,
-        y: 150,
+        x: 350,
+        y: 200,
         width: 32,
         height: 32,
         color: '#4caf50',
@@ -49,7 +50,7 @@ const professors = [
         id: 'eng',
         name: 'Prof. Tesla Wright',
         x: 200,
-        y: 450,
+        y: 320,
         width: 32,
         height: 32,
         color: '#ff9800',
@@ -60,8 +61,8 @@ const professors = [
     {
         id: 'arts',
         name: 'Prof. Monet Canvas',
-        x: 600,
-        y: 450,
+        x: 350,
+        y: 320,
         width: 32,
         height: 32,
         color: '#e91e63',
@@ -71,14 +72,15 @@ const professors = [
     }
 ];
 
+// University cluster (right side - University Row)
 const universities = [
     {
         id: 'mit',
         name: 'MIT Admissions',
-        x: 900,
-        y: 200,
-        width: 48,
-        height: 48,
+        x: 1050,
+        y: 150,
+        width: 56,
+        height: 56,
         color: '#a31f34',
         specialty: 'Massachusetts Institute of Technology',
         type: 'university',
@@ -87,10 +89,10 @@ const universities = [
     {
         id: 'stanford',
         name: 'Stanford Admissions',
-        x: 1100,
-        y: 200,
-        width: 48,
-        height: 48,
+        x: 1200,
+        y: 150,
+        width: 56,
+        height: 56,
         color: '#8c1515',
         specialty: 'Stanford University',
         type: 'university',
@@ -99,10 +101,10 @@ const universities = [
     {
         id: 'harvard',
         name: 'Harvard Admissions',
-        x: 1000,
-        y: 350,
-        width: 48,
-        height: 48,
+        x: 1050,
+        y: 300,
+        width: 56,
+        height: 56,
         color: '#a51c30',
         specialty: 'Harvard University',
         type: 'university',
@@ -111,10 +113,10 @@ const universities = [
     {
         id: 'berkeley',
         name: 'UC Berkeley Admissions',
-        x: 900,
-        y: 500,
-        width: 48,
-        height: 48,
+        x: 1200,
+        y: 300,
+        width: 56,
+        height: 56,
         color: '#003262',
         specialty: 'UC Berkeley',
         type: 'university',
@@ -399,25 +401,112 @@ function updatePlayer() {
 
 // Draw everything
 function draw() {
-    // Clear canvas
-    ctx.fillStyle = '#8bc34a';
+    // Clear canvas - grass background
+    ctx.fillStyle = '#6fa352';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw grid pattern
-    ctx.strokeStyle = '#7cb342';
-    ctx.lineWidth = 1;
-    for (let i = 0; i < canvas.width; i += 40) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i, canvas.height);
-        ctx.stroke();
+    // Draw grass pattern
+    ctx.fillStyle = '#7cb342';
+    for (let i = 0; i < canvas.width; i += 20) {
+        for (let j = 0; j < canvas.height; j += 20) {
+            if (Math.random() > 0.7) {
+                ctx.fillRect(i, j, 2, 2);
+            }
+        }
     }
-    for (let i = 0; i < canvas.height; i += 40) {
-        ctx.beginPath();
-        ctx.moveTo(0, i);
-        ctx.lineTo(canvas.width, i);
-        ctx.stroke();
+
+    // Draw roads/paths
+    // Main horizontal road
+    ctx.fillStyle = '#8d8d8d';
+    ctx.fillRect(0, 240, canvas.width, 80);
+
+    // Road stripes
+    ctx.fillStyle = '#ffeb3b';
+    for (let i = 0; i < canvas.width; i += 60) {
+        ctx.fillRect(i, 277, 30, 6);
     }
+
+    // Vertical road to Academic Center
+    ctx.fillStyle = '#8d8d8d';
+    ctx.fillRect(260, 0, 60, 280);
+
+    // Vertical road to University Row
+    ctx.fillStyle = '#8d8d8d';
+    ctx.fillRect(1110, 100, 60, 280);
+
+    // Road markings
+    ctx.fillStyle = '#ffffff';
+    ctx.setLineDash([10, 10]);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.moveTo(290, 0);
+    ctx.lineTo(290, 240);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(1140, 100);
+    ctx.lineTo(1140, 280);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Sidewalks
+    ctx.fillStyle = '#b8b8b8';
+    ctx.fillRect(0, 235, canvas.width, 5);
+    ctx.fillRect(0, 320, canvas.width, 5);
+    ctx.fillRect(255, 0, 5, 240);
+    ctx.fillRect(320, 0, 5, 240);
+    ctx.fillRect(1105, 100, 5, 180);
+    ctx.fillRect(1170, 100, 5, 180);
+
+    // Draw grass areas for buildings
+    // Academic Center lawn
+    ctx.fillStyle = '#5fa342';
+    ctx.fillRect(100, 100, 380, 130);
+
+    // Add some decorative trees/bushes
+    const drawTree = (x, y) => {
+        // Tree trunk
+        ctx.fillStyle = '#6d4c41';
+        ctx.fillRect(x, y, 8, 12);
+        // Tree foliage
+        ctx.fillStyle = '#388e3c';
+        ctx.beginPath();
+        ctx.arc(x + 4, y, 12, 0, Math.PI * 2);
+        ctx.fill();
+    };
+
+    // Trees around Academic Center
+    drawTree(120, 120);
+    drawTree(440, 120);
+    drawTree(120, 340);
+    drawTree(440, 340);
+
+    // Trees around University Row
+    drawTree(980, 120);
+    drawTree(1300, 120);
+    drawTree(980, 360);
+    drawTree(1300, 360);
+
+    // Area signs
+    // Academic Center sign
+    ctx.fillStyle = '#1976d2';
+    ctx.fillRect(280, 90, 20, 35);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(275, 85, 30, 20);
+    ctx.fillStyle = '#1976d2';
+    ctx.font = 'bold 8px Courier New';
+    ctx.textAlign = 'center';
+    ctx.fillText('ACADEMIC', 290, 93);
+    ctx.fillText('CENTER', 290, 101);
+
+    // University Row sign
+    ctx.fillStyle = '#7b1fa2';
+    ctx.fillRect(1130, 75, 20, 35);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(1125, 70, 30, 20);
+    ctx.fillStyle = '#7b1fa2';
+    ctx.fillText('UNIVERSITY', 1140, 78);
+    ctx.fillText('ROW', 1140, 86);
 
     // Draw all NPCs (professors and universities)
     npcs.forEach(npc => {
