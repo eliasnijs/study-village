@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Village - University Exploration Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+
+        <div id="dialog-box" class="hidden">
+            <div id="dialog-header">
+                <span id="professor-name"></span>
+                <button id="close-dialog">×</button>
+            </div>
+            <div id="dialog-content">
+                <div id="chat-messages"></div>
+                <div id="input-container">
+                    <input type="text" id="user-input" placeholder="Ask about study programs...">
+                    <button id="send-btn">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="controls-info">
+            <p>Use Arrow Keys or WASD to move | Press SPACE near professors to talk | Press P for Profile | Press I for Inventory</p>
+        </div>
+
+        <button id="profile-btn">📝 Profile</button>
+        <button id="inventory-btn">🎒 Skills</button>
+
+        <div id="profile-modal" class="hidden">
+            <div id="profile-content">
+                <div id="profile-header">
+                    <h2>Your Profile</h2>
+                    <button id="close-profile">×</button>
+                </div>
+                <div id="profile-body">
+                    <div class="profile-section">
+                        <label for="user-name">Name:</label>
+                        <input type="text" id="user-name" placeholder="Enter your name">
+                    </div>
+
+                    <div class="profile-section">
+                        <label for="user-cv">CV / Background:</label>
+                        <textarea id="user-cv" rows="6" placeholder="Share your background, experiences, skills, interests, achievements..."></textarea>
+                    </div>
+
+                    <div class="profile-section">
+                        <label for="favorite-subjects">Favorite Subjects:</label>
+                        <input type="text" id="favorite-subjects" placeholder="e.g., Math, Physics, Art, Literature">
+                    </div>
+
+                    <div class="profile-section">
+                        <label for="career-goals">Career Goals:</label>
+                        <textarea id="career-goals" rows="3" placeholder="What do you hope to do in your future career?"></textarea>
+                    </div>
+
+                    <div class="profile-section">
+                        <label for="learning-style">Learning Style:</label>
+                        <select id="learning-style">
+                            <option value="">Select...</option>
+                            <option value="hands-on">Hands-on / Practical</option>
+                            <option value="theoretical">Theoretical / Research</option>
+                            <option value="creative">Creative / Artistic</option>
+                            <option value="collaborative">Collaborative / Group work</option>
+                            <option value="independent">Independent / Self-study</option>
+                        </select>
+                    </div>
+
+                    <button id="save-profile">Save Profile</button>
+                    <p id="profile-saved-msg" class="hidden">✓ Profile saved!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="skill-tree-modal" class="hidden">
+            <div id="skill-tree-content">
+                <div id="skill-tree-header">
+                    <h2>Skill Tree & Inventory</h2>
+                    <button id="close-skill-tree">×</button>
+                </div>
+                <div id="skill-tree-body">
+                    <div id="skill-tree-tabs">
+                        <button class="tab-btn active" data-tab="inventory">Inventory</button>
+                        <button class="tab-btn" data-tab="tree">Skill Tree</button>
+                    </div>
+
+                    <div id="inventory-tab" class="tab-content active">
+                        <div class="inventory-section">
+                            <h3>Add Certification / Achievement</h3>
+                            <input type="text" id="cert-title" placeholder="e.g., Python Programming Certificate">
+                            <input type="text" id="cert-issuer" placeholder="Issuer (e.g., Coursera, University)">
+                            <select id="cert-category">
+                                <option value="">Select Category...</option>
+                                <option value="programming">Programming</option>
+                                <option value="math">Mathematics</option>
+                                <option value="science">Science</option>
+                                <option value="design">Design</option>
+                                <option value="business">Business</option>
+                                <option value="language">Language</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <button id="add-cert-btn">Add to Inventory</button>
+                        </div>
+
+                        <div class="inventory-list">
+                            <h3>Your Certifications & Skills</h3>
+                            <div id="cert-list"></div>
+                        </div>
+                    </div>
+
+                    <div id="tree-tab" class="tab-content">
+                        <div id="skill-tree-canvas-container">
+                            <canvas id="skill-tree-canvas"></canvas>
+                        </div>
+                        <div id="skill-tree-legend">
+                            <p><strong>Your skill tree is automatically built from your certifications!</strong></p>
+                            <p>Add certifications in the Inventory tab to grow your tree.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
