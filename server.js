@@ -14,7 +14,7 @@ app.use(express.static(__dirname));
 // Chat endpoint with Anthropic Claude
 app.post('/api/chat', async (req, res) => {
     try {
-        const { professorId, message, systemPrompt, userProfile, conversationHistory } = req.body;
+        const { professorId, message, systemPrompt, userProfile, conversationHistory, certifications } = req.body;
 
         // Build enhanced system prompt with user context
         let enhancedSystemPrompt = systemPrompt;
@@ -39,6 +39,15 @@ app.post('/api/chat', async (req, res) => {
             }
 
             enhancedSystemPrompt += '\nUse this context to personalize your responses and provide relevant advice tailored to this student\'s background, interests, and goals. Reference their profile naturally in conversation when appropriate.';
+        }
+
+        // Add certifications/skills to context
+        if (certifications && certifications.length > 0) {
+            enhancedSystemPrompt += '\n\n--- STUDENT CERTIFICATIONS & SKILLS ---\n';
+            certifications.forEach(cert => {
+                enhancedSystemPrompt += `- ${cert.title} (${cert.category}) from ${cert.issuer}\n`;
+            });
+            enhancedSystemPrompt += '\nConsider these certifications when discussing their readiness for programs, potential career paths, and areas for growth. Acknowledge their achievements and suggest how they can build on them.';
         }
 
         // Build conversation messages from history (excluding the current message)

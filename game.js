@@ -273,7 +273,8 @@ async function sendMessage() {
                 message: message,
                 systemPrompt: currentProfessor.systemPrompt,
                 userProfile: userProfile,
-                conversationHistory: conversationHistory[currentProfessor.id]
+                conversationHistory: conversationHistory[currentProfessor.id],
+                certifications: certifications
             })
         });
 
@@ -410,6 +411,237 @@ function draw() {
     ctx.stroke();
 }
 
+// Skill Tree / Inventory Modal Management
+const inventoryBtn = document.getElementById('inventory-btn');
+const skillTreeModal = document.getElementById('skill-tree-modal');
+const closeSkillTreeBtn = document.getElementById('close-skill-tree');
+const tabBtns = document.querySelectorAll('.tab-btn');
+const certTitleInput = document.getElementById('cert-title');
+const certIssuerInput = document.getElementById('cert-issuer');
+const certCategorySelect = document.getElementById('cert-category');
+const addCertBtn = document.getElementById('add-cert-btn');
+const certList = document.getElementById('cert-list');
+const skillTreeCanvas = document.getElementById('skill-tree-canvas');
+const skillTreeCtx = skillTreeCanvas.getContext('2d');
+
+inventoryBtn.addEventListener('click', () => {
+    skillTreeModal.classList.remove('hidden');
+    renderSkillTree();
+});
+
+closeSkillTreeBtn.addEventListener('click', () => {
+    skillTreeModal.classList.add('hidden');
+});
+
+// Press 'I' to open inventory
+window.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'i' && skillTreeModal.classList.contains('hidden') && dialogBox.classList.contains('hidden') && profileModal.classList.contains('hidden')) {
+        skillTreeModal.classList.remove('hidden');
+        renderSkillTree();
+    }
+});
+
+// Tab switching
+tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const targetTab = btn.dataset.tab;
+
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+
+        document.getElementById(`${targetTab}-tab`).classList.add('active');
+
+        if (targetTab === 'tree') {
+            renderSkillTree();
+        }
+    });
+});
+
+// Add certification
+addCertBtn.addEventListener('click', () => {
+    const title = certTitleInput.value.trim();
+    const issuer = certIssuerInput.value.trim();
+    const category = certCategorySelect.value;
+
+    if (!title || !issuer || !category) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    const cert = {
+        id: Date.now(),
+        title,
+        issuer,
+        category,
+        dateAdded: new Date().toISOString()
+    };
+
+    certifications.push(cert);
+    saveCertifications();
+    renderCertifications();
+    renderSkillTree();
+
+    certTitleInput.value = '';
+    certIssuerInput.value = '';
+    certCategorySelect.value = '';
+});
+
+// Render certifications list
+function renderCertifications() {
+    certList.innerHTML = '';
+
+    if (certifications.length === 0) {
+        certList.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">No certifications yet. Add your first one above!</p>';
+        return;
+    }
+
+    certifications.forEach(cert => {
+        const certItem = document.createElement('div');
+        certItem.className = 'cert-item';
+
+        certItem.innerHTML = `
+            <div class="cert-info">
+                <div class="cert-title">${cert.title}</div>
+                <div class="cert-details">
+                    ${cert.issuer}
+                    <span class="cert-category">${cert.category}</span>
+                </div>
+            </div>
+            <button class="cert-remove" data-id="${cert.id}">Remove</button>
+        `;
+
+        certList.appendChild(certItem);
+    });
+
+    // Add remove handlers
+    document.querySelectorAll('.cert-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            certifications = certifications.filter(c => c.id !== id);
+            saveCertifications();
+            renderCertifications();
+            renderSkillTree();
+        });
+    });
+}
+
+// Render skill tree
+function renderSkillTree() {
+    if (!skillTreeCanvas) return;
+
+    const width = 800;
+    const height = 600;
+    skillTreeCanvas.width = width;
+    skillTreeCanvas.height = height;
+
+    skillTreeCtx.clearRect(0, 0, width, height);
+
+    if (certifications.length === 0) {
+        skillTreeCtx.fillStyle = '#999';
+        skillTreeCtx.font = '16px Courier New';
+        skillTreeCtx.textAlign = 'center';
+        skillTreeCtx.fillText('Add certifications to build your skill tree!', width/2, height/2);
+        return;
+    }
+
+    // Group by category
+    const grouped = {};
+    certifications.forEach(cert => {
+        if (!grouped[cert.category]) {
+            grouped[cert.category] = [];
+        }
+        grouped[cert.category].push(cert);
+    });
+
+    const categories = Object.keys(grouped);
+    const categoryColors = {
+        programming: '#2196f3',
+        math: '#ff9800',
+        science: '#4caf50',
+        design: '#e91e63',
+        business: '#9c27b0',
+        language: '#00bcd4',
+        other: '#757575'
+    };
+
+    // Draw tree structure
+    const nodeRadius = 40;
+    const levelHeight = 120;
+    const startY = 80;
+
+    categories.forEach((category, catIndex) => {
+        const certs = grouped[category];
+        const color = categoryColors[category] || categoryColors.other;
+
+        certs.forEach((cert, certIndex) => {
+            const x = (width / (certs.length + 1)) * (certIndex + 1);
+            const y = startY + (catIndex * levelHeight);
+
+            // Draw connections to previous level
+            if (catIndex > 0) {
+                const prevCategory = categories[catIndex - 1];
+                const prevCerts = grouped[prevCategory];
+                prevCerts.forEach((prevCert, prevIndex) => {
+                    const prevX = (width / (prevCerts.length + 1)) * (prevIndex + 1);
+                    const prevY = startY + ((catIndex - 1) * levelHeight);
+
+                    skillTreeCtx.strokeStyle = '#ddd';
+                    skillTreeCtx.lineWidth = 2;
+                    skillTreeCtx.beginPath();
+                    skillTreeCtx.moveTo(prevX, prevY + nodeRadius);
+                    skillTreeCtx.lineTo(x, y - nodeRadius);
+                    skillTreeCtx.stroke();
+                });
+            }
+
+            // Draw node
+            skillTreeCtx.fillStyle = color;
+            skillTreeCtx.beginPath();
+            skillTreeCtx.arc(x, y, nodeRadius, 0, Math.PI * 2);
+            skillTreeCtx.fill();
+
+            skillTreeCtx.strokeStyle = '#000';
+            skillTreeCtx.lineWidth = 3;
+            skillTreeCtx.stroke();
+
+            // Draw category icon/letter
+            skillTreeCtx.fillStyle = '#fff';
+            skillTreeCtx.font = 'bold 16px Courier New';
+            skillTreeCtx.textAlign = 'center';
+            skillTreeCtx.textBaseline = 'middle';
+            skillTreeCtx.fillText(category.substring(0, 3).toUpperCase(), x, y - 5);
+
+            // Draw cert count
+            skillTreeCtx.font = '12px Courier New';
+            skillTreeCtx.fillText(`#${certIndex + 1}`, x, y + 10);
+
+            // Draw title below node
+            skillTreeCtx.fillStyle = '#333';
+            skillTreeCtx.font = '11px Courier New';
+            const titleWords = cert.title.split(' ');
+            let line = '';
+            let lineY = y + nodeRadius + 15;
+
+            titleWords.forEach((word, i) => {
+                const testLine = line + word + ' ';
+                const metrics = skillTreeCtx.measureText(testLine);
+                if (metrics.width > 80 && i > 0) {
+                    skillTreeCtx.fillText(line.trim(), x, lineY);
+                    line = word + ' ';
+                    lineY += 12;
+                } else {
+                    line = testLine;
+                }
+            });
+            skillTreeCtx.fillText(line.trim(), x, lineY);
+        });
+    });
+}
+
 // Game loop
 function gameLoop() {
     updatePlayer();
@@ -419,4 +651,5 @@ function gameLoop() {
 
 // Initialize
 loadProfile();
+loadCertifications();
 gameLoop();
