@@ -86,6 +86,70 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
+// Recommendations endpoint
+app.post('/api/recommendations', async (req, res) => {
+    try {
+        const { userProfile, conversationHistory, certifications, goalSkills, universities } = req.body;
+
+        // Build context from recent conversations (last 3 messages per NPC to reduce tokens)
+        let conversationSummary = '';
+        Object.keys(conversationHistory).forEach(npcId => {
+            const history = conversationHistory[npcId];
+            if (history.length > 0) {
+                conversationSummary += `\n\n--- Conversation with ${npcId} ---\n`;
+                const recentHistory = history.slice(-6); // Last 6 messages (3 exchanges)
+                recentHistory.forEach(msg => {
+                    conversationSummary += `${msg.role}: ${msg.content}\n`;
+                });
+            }
+        });
+
+        // Build the recommendation prompt
+        let prompt = `You are an expert university admissions counselor. Analyze the following student information and provide personalized university and program recommendations.
+
+STUDENT PROFILE:
+${userProfile.name ? `Name: ${userProfile.name}` : ''}
+${userProfile.cv ? `Background: ${userProfile.cv}` : ''}
+${userProfile.favoriteSubjects ? `Favorite Subjects: ${userProfile.favoriteSubjects}` : ''}
+${userProfile.careerGoals ? `Career Goals: ${userProfile.careerGoals}` : ''}
+${userProfile.learningStyle ? `Learning Style: ${userProfile.learningStyle}` : ''}
+
+CERTIFICATIONS & SKILLS:
+${certifications.length > 0 ? certifications.map(c => `- ${c.title} (${c.category})`).join('\n') : 'None listed'}
+
+LEARNING GOALS:
+${goalSkills.length > 0 ? goalSkills.map(s => `- ${s.title} (${s.category})`).join('\n') : 'None listed'}
+
+AVAILABLE UNIVERSITIES:
+${universities.map(u => `- ${u.name} (${u.specialty}) - Location: ${u.location}`).join('\n')}
+
+CONVERSATION HISTORY:
+${conversationSummary || 'No conversations yet'}
+
+Based on this comprehensive information, provide:
+1. Top 3 recommended universities from the available list and explain why each is a good match
+2. Recommended programs/majors based on their interests, skills, and goals
+3. Action items - specific steps they should take next (talk to specific professors, build certain skills, research programs, etc.)
+4. Areas of concern or gaps they should address
+
+Format your response in clear sections with headers. Be specific, honest, and actionable. Reference their actual profile details and conversations.`;
+
+        const completion = await anthropic.messages.create({
+            model: "claude-3-5-sonnet-20241022",
+            max_tokens: 1024,
+            system: 'IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, hashtags for headers, or special formatting. Write naturally as if speaking in a casual conversation. Use line breaks for structure but no special characters for formatting.',
+            messages: [{ role: 'user', content: prompt }]
+        });
+
+        const recommendations = completion.content[0].text;
+        res.json({ recommendations });
+
+    } catch (error) {
+        console.error('Recommendations error:', error);
+        res.status(500).json({ error: 'Failed to generate recommendations' });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Study Village server running on http://localhost:${PORT}`);

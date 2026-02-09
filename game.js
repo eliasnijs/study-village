@@ -75,52 +75,56 @@ const professors = [
 // University cluster (right side - University Row)
 const universities = [
     {
-        id: 'mit',
-        name: 'MIT Admissions',
+        id: 'kuleuven',
+        name: 'KU Leuven',
         x: 1050,
         y: 150,
         width: 56,
         height: 56,
-        color: '#a31f34',
-        specialty: 'Massachusetts Institute of Technology',
+        color: '#1e3a8a',
+        specialty: 'KU Leuven - Catholic University of Leuven',
+        location: 'Leuven, Belgium',
         type: 'university',
-        systemPrompt: 'You are an admissions counselor for MIT (Massachusetts Institute of Technology). You provide detailed information about admission requirements, application process, deadlines, programs offered, campus life, and financial aid. MIT Requirements: GPA 4.0+ (weighted), SAT 1500+, strong STEM background, research experience preferred, recommendation letters, essays. Application deadline: January 1st for Regular Decision, November 1st for Early Action. Programs: Engineering, Computer Science, Physics, Mathematics, etc. Be professional, encouraging but realistic about competitiveness. Assess the student\'s profile against MIT standards and give honest feedback about their chances. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
+        systemPrompt: 'You are an admissions counselor for KU Leuven (Katholieke Universiteit Leuven) located in Leuven, Belgium. You provide detailed information about admission requirements, application process, deadlines, programs offered, campus life, and tuition. KU Leuven is one of Europe\'s top universities. Programs: Engineering, Medicine, Sciences, Law, Economics, Humanities. Admission: Secondary school diploma, entrance exams for some programs (like Medicine), language requirements (Dutch for most programs, some English-taught masters). Application deadline: Usually March 1st for September start. Tuition: Around €950 per year for EU students. Be professional and explain the Belgian university system. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
     },
     {
-        id: 'stanford',
-        name: 'Stanford Admissions',
+        id: 'ugent',
+        name: 'UGent',
         x: 1200,
         y: 150,
         width: 56,
         height: 56,
-        color: '#8c1515',
-        specialty: 'Stanford University',
+        color: '#1e40af',
+        specialty: 'Ghent University',
+        location: 'Ghent, Belgium',
         type: 'university',
-        systemPrompt: 'You are an admissions counselor for Stanford University. You provide detailed information about admission requirements, application process, deadlines, programs, campus culture, and financial aid. Stanford Requirements: GPA 3.9+, SAT 1470+, well-rounded profile, leadership experience, strong essays showing intellectual vitality. Application deadline: January 5th for Regular Decision, November 1st for Restrictive Early Action. Programs: Wide range from humanities to STEM. Acceptance rate ~4%. Be warm but honest about selectivity. Evaluate student readiness and provide constructive guidance. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
+        systemPrompt: 'You are an admissions counselor for Ghent University (Universiteit Gent / UGent) located in Ghent, Belgium. You provide detailed information about admission requirements, application process, deadlines, programs, campus culture, and tuition. UGent is a top Belgian university known for sciences and engineering. Programs: Engineering, Sciences, Medicine, Bioscience Engineering, Economics, Humanities. Admission: Secondary school diploma, entrance exam for some programs, language requirements. Application deadline: March for September start. Tuition: Around €950 per year for EU students. Explain the differences between university and hogeschool. Be informative and honest about program difficulty. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
     },
     {
-        id: 'harvard',
-        name: 'Harvard Admissions',
+        id: 'howest',
+        name: 'Howest',
         x: 1050,
         y: 300,
         width: 56,
         height: 56,
-        color: '#a51c30',
-        specialty: 'Harvard University',
-        type: 'university',
-        systemPrompt: 'You are an admissions counselor for Harvard University. You provide comprehensive information about admissions requirements, application process, deadlines, programs, and opportunities. Harvard Requirements: GPA 4.0+, SAT 1480+, exceptional extracurriculars, demonstrated leadership, compelling personal story, strong recommendations. Application deadline: January 1st for Regular Decision, November 1st for Early Action. Programs: Liberal Arts, Sciences, Engineering, Pre-Med, Business, Law. Holistic review process. Be professional and provide honest assessment of student\'s competitiveness. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
+        color: '#dc2626',
+        specialty: 'Hogeschool West-Vlaanderen',
+        location: 'Kortrijk & Bruges, Belgium',
+        type: 'hogeschool',
+        systemPrompt: 'You are an admissions counselor for Howest (Hogeschool West-Vlaanderen) with campuses in Kortrijk and Bruges, Belgium. You provide information about admission requirements, application process, programs, and practical training. Howest is a hogeschool (university of applied sciences) focused on practical, professional education. Programs: Applied Computer Science (DAE - Digital Arts & Entertainment is famous), Communication, Business, Healthcare, Applied Engineering. Admission: Secondary school diploma, portfolio for creative programs. Application deadline: Flexible, usually until August for September start. Tuition: Around €950 per year for EU students. Explain that hogeschool focuses on hands-on skills and internships, while universities focus on theory and research. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
     },
     {
-        id: 'berkeley',
-        name: 'UC Berkeley Admissions',
+        id: 'thomasmore',
+        name: 'Thomas More',
         x: 1200,
         y: 300,
         width: 56,
         height: 56,
-        color: '#003262',
-        specialty: 'UC Berkeley',
-        type: 'university',
-        systemPrompt: 'You are an admissions counselor for UC Berkeley. You provide information about UC application requirements, Personal Insight Questions, programs, and campus resources. UC Berkeley Requirements: GPA 3.9+ (UC GPA), strong coursework in A-G requirements, 4 Personal Insight Questions, no SAT/ACT required. Application deadline: November 30th. Programs: Engineering, Computer Science, Business (Haas), Sciences, Humanities. In-state preference but competitive out-of-state admissions. Be informative and assess fit based on academics and PIQs. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
+        color: '#059669',
+        specialty: 'Thomas More Hogeschool',
+        location: 'Antwerp & Mechelen, Belgium',
+        type: 'hogeschool',
+        systemPrompt: 'You are an admissions counselor for Thomas More Hogeschool with campuses in Antwerp, Mechelen, and other cities in Belgium. You provide information about admission requirements, application process, programs, and career preparation. Thomas More is a hogeschool offering practical, professional bachelor programs. Programs: Applied Computer Science, Business Management, Communication, Education, Healthcare, Industrial Engineering. Admission: Secondary school diploma, some programs have additional requirements. Application deadline: Flexible enrollment, usually until late summer. Tuition: Around €950 per year for EU students. Emphasize the practical approach, internships, and strong connections with industry. Explain hogeschool vs university differences. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
     }
 ];
 
@@ -171,10 +175,10 @@ const conversationHistory = {
     bio: [],
     eng: [],
     arts: [],
-    mit: [],
-    stanford: [],
-    harvard: [],
-    berkeley: []
+    kuleuven: [],
+    ugent: [],
+    howest: [],
+    thomasmore: []
 };
 
 // Certifications and skill tree
@@ -1047,6 +1051,125 @@ function gameLoop() {
     draw();
     requestAnimationFrame(gameLoop);
 }
+
+// Recommendations modal management
+const recommendationsBtn = document.getElementById('recommendations-btn');
+const recommendationsModal = document.getElementById('recommendations-modal');
+const closeRecommendationsBtn = document.getElementById('close-recommendations');
+const recommendationsLoading = document.getElementById('recommendations-loading');
+const recommendationsResult = document.getElementById('recommendations-result');
+
+recommendationsBtn.addEventListener('click', async () => {
+    recommendationsModal.classList.remove('hidden');
+    recommendationsLoading.classList.remove('hidden');
+    recommendationsResult.innerHTML = '';
+
+    try {
+        // Gather all data
+        const response = await fetch('/api/recommendations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userProfile,
+                conversationHistory,
+                certifications,
+                goalSkills,
+                universities: universities.map(u => ({ name: u.name, specialty: u.specialty, location: u.location }))
+            })
+        });
+
+        const data = await response.json();
+
+        recommendationsLoading.classList.add('hidden');
+
+        if (data.error) {
+            recommendationsResult.innerHTML = '<p style="color: red;">Failed to generate recommendations. Please try again.</p>';
+        } else {
+            // Format the recommendations nicely
+            const formatted = data.recommendations
+                .split('\n\n')
+                .map(section => {
+                    if (section.trim().startsWith('#')) {
+                        const lines = section.split('\n');
+                        const header = lines[0].replace(/^#+\s*/, '');
+                        const content = lines.slice(1).join('\n');
+                        return `<div class="recommendation-section"><h3>${header}</h3><p>${content.replace(/\n/g, '<br>')}</p></div>`;
+                    }
+                    return `<p>${section.replace(/\n/g, '<br>')}</p>`;
+                })
+                .join('');
+
+            recommendationsResult.innerHTML = formatted || data.recommendations.replace(/\n/g, '<br>');
+        }
+    } catch (error) {
+        console.error('Recommendations error:', error);
+        recommendationsLoading.classList.add('hidden');
+        recommendationsResult.innerHTML = '<p style="color: red;">Failed to generate recommendations. Please check your connection and try again.</p>';
+    }
+});
+
+closeRecommendationsBtn.addEventListener('click', () => {
+    recommendationsModal.classList.add('hidden');
+});
+
+// Fast travel modal management
+const fastTravelBtn = document.getElementById('fast-travel-btn');
+const fastTravelModal = document.getElementById('fast-travel-modal');
+const closeFastTravelBtn = document.getElementById('close-fast-travel');
+const fastTravelButtons = document.querySelectorAll('.fast-travel-btn');
+
+fastTravelBtn.addEventListener('click', () => {
+    fastTravelModal.classList.remove('hidden');
+});
+
+closeFastTravelBtn.addEventListener('click', () => {
+    fastTravelModal.classList.add('hidden');
+});
+
+fastTravelButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const npcId = btn.getAttribute('data-npc');
+        const npc = npcs.find(n => n.id === npcId);
+
+        if (npc) {
+            // Teleport player near the NPC
+            player.x = npc.x - 50;
+            player.y = npc.y;
+
+            // Close modal
+            fastTravelModal.classList.add('hidden');
+        }
+    });
+});
+
+// Keyboard shortcuts (only when not typing in input fields)
+window.addEventListener('keydown', (e) => {
+    // Check if user is typing in an input field
+    const isTyping = document.activeElement.tagName === 'INPUT' ||
+                     document.activeElement.tagName === 'TEXTAREA';
+
+    if (isTyping) return; // Don't trigger shortcuts while typing
+
+    if (e.key.toLowerCase() === 'p') {
+        profileModal.classList.remove('hidden');
+    }
+    if (e.key.toLowerCase() === 'i') {
+        skillTreeModal.classList.remove('hidden');
+    }
+    if (e.key.toLowerCase() === 'r') {
+        recommendationsBtn.click();
+    }
+    if (e.key.toLowerCase() === 't') {
+        fastTravelModal.classList.remove('hidden');
+    }
+    if (e.key === 'Escape') {
+        dialogBox.classList.add('hidden');
+        profileModal.classList.add('hidden');
+        skillTreeModal.classList.add('hidden');
+        recommendationsModal.classList.add('hidden');
+        fastTravelModal.classList.add('hidden');
+    }
+});
 
 // Initialize
 loadProfile();

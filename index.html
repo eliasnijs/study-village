@@ -25,11 +25,13 @@
         </div>
 
         <div id="controls-info">
-            <p>Use Arrow Keys or WASD to move | Press SPACE near professors to talk | Press P for Profile | Press I for Inventory</p>
+            <p>Arrow/WASD: Move | SPACE: Talk | P: Profile | I: Skills | R: Recommendations | T: Fast Travel | ESC: Close</p>
         </div>
 
         <button id="profile-btn">📝 Profile</button>
         <button id="inventory-btn">🎒 Skills</button>
+        <button id="recommendations-btn">🎯 Get Recommendations</button>
+        <button id="fast-travel-btn">🚀 Fast Travel</button>
 
         <div id="profile-modal" class="hidden">
             <div id="profile-content">
@@ -154,6 +156,47 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="recommendations-modal" class="hidden">
+            <div id="recommendations-content">
+                <div id="recommendations-header">
+                    <h2>🎯 Your Personalized Recommendations</h2>
+                    <button id="close-recommendations">×</button>
+                </div>
+                <div id="recommendations-body">
+                    <div id="recommendations-loading" class="hidden">
+                        <p>🤔 Analyzing your profile, conversations, skills, and goals...</p>
+                        <p style="margin-top: 10px;">This may take a moment...</p>
+                    </div>
+                    <div id="recommendations-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="fast-travel-modal" class="hidden">
+            <div id="fast-travel-content">
+                <div id="fast-travel-header">
+                    <h2>🚀 Fast Travel</h2>
+                    <button id="close-fast-travel">×</button>
+                </div>
+                <div id="fast-travel-body">
+                    <h3>Academic Center - Professors</h3>
+                    <div class="fast-travel-section">
+                        <button class="fast-travel-btn" data-npc="cs">Prof. Ada Code (CS)</button>
+                        <button class="fast-travel-btn" data-npc="bio">Prof. Darwin Green (Biology)</button>
+                        <button class="fast-travel-btn" data-npc="eng">Prof. Tesla Wright (Engineering)</button>
+                        <button class="fast-travel-btn" data-npc="arts">Prof. Monet Canvas (Fine Arts)</button>
+                    </div>
+                    <h3 style="margin-top: 20px;">Universities & Hogescholen</h3>
+                    <div class="fast-travel-section">
+                        <button class="fast-travel-btn" data-npc="kuleuven">KU Leuven</button>
+                        <button class="fast-travel-btn" data-npc="ugent">UGent (Ghent)</button>
+                        <button class="fast-travel-btn" data-npc="howest">Howest</button>
+                        <button class="fast-travel-btn" data-npc="thomasmore">Thomas More</button>
                     </div>
                 </div>
             </div>
