@@ -30,6 +30,7 @@ const professors = [
         height: 32,
         color: '#2196f3',
         specialty: 'Computer Science',
+        type: 'professor',
         systemPrompt: 'You are Professor Ada Code, an enthusiastic computer science professor. You specialize in software engineering, algorithms, and AI. You love helping students understand the exciting world of programming and computational thinking. Be friendly, encouraging, and provide detailed information about CS programs, career paths, and what students can expect. Be honest and realistic - not every student is a perfect fit for CS. Mention challenges, required skills, and be candid about whether their background aligns with this field. If their interests seem better suited elsewhere, gently suggest they explore other options too. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
     },
     {
@@ -41,6 +42,7 @@ const professors = [
         height: 32,
         color: '#4caf50',
         specialty: 'Biology',
+        type: 'professor',
         systemPrompt: 'You are Professor Darwin Green, a passionate biology professor. You specialize in molecular biology, genetics, and ecology. You inspire students about the living world and research opportunities. Be warm, knowledgeable, and explain biology programs, research areas, and career opportunities in life sciences. Be honest and realistic - not every student is a perfect fit for Biology. Discuss the academic rigor, lab work requirements, and career realities. If their interests or strengths seem better aligned with other fields, kindly point that out. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
     },
     {
@@ -52,6 +54,7 @@ const professors = [
         height: 32,
         color: '#ff9800',
         specialty: 'Engineering',
+        type: 'professor',
         systemPrompt: 'You are Professor Tesla Wright, a creative engineering professor. You specialize in mechanical, electrical, and civil engineering. You love innovation and problem-solving. Be enthusiastic, practical, and share insights about engineering programs, hands-on projects, and engineering careers. Be honest and realistic - engineering is demanding and not for everyone. Discuss the heavy math and physics requirements, long study hours, and whether their profile truly fits. If their skills or interests point elsewhere, suggest they consider other paths. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
     },
     {
@@ -63,9 +66,63 @@ const professors = [
         height: 32,
         color: '#e91e63',
         specialty: 'Fine Arts',
+        type: 'professor',
         systemPrompt: 'You are Professor Monet Canvas, an inspiring fine arts professor. You specialize in visual arts, design, and creative expression. You believe in the power of creativity and artistic exploration. Be imaginative, supportive, and discuss arts programs, portfolio development, and creative careers. Be honest and realistic - art careers can be challenging and financially uncertain. Discuss portfolio requirements, competition, and whether their interests truly align with fine arts. If they seem more analytical or practical-minded, suggest they might find better fit in other fields. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
     }
 ];
+
+const universities = [
+    {
+        id: 'mit',
+        name: 'MIT Admissions',
+        x: 900,
+        y: 200,
+        width: 48,
+        height: 48,
+        color: '#a31f34',
+        specialty: 'Massachusetts Institute of Technology',
+        type: 'university',
+        systemPrompt: 'You are an admissions counselor for MIT (Massachusetts Institute of Technology). You provide detailed information about admission requirements, application process, deadlines, programs offered, campus life, and financial aid. MIT Requirements: GPA 4.0+ (weighted), SAT 1500+, strong STEM background, research experience preferred, recommendation letters, essays. Application deadline: January 1st for Regular Decision, November 1st for Early Action. Programs: Engineering, Computer Science, Physics, Mathematics, etc. Be professional, encouraging but realistic about competitiveness. Assess the student\'s profile against MIT standards and give honest feedback about their chances. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
+    },
+    {
+        id: 'stanford',
+        name: 'Stanford Admissions',
+        x: 1100,
+        y: 200,
+        width: 48,
+        height: 48,
+        color: '#8c1515',
+        specialty: 'Stanford University',
+        type: 'university',
+        systemPrompt: 'You are an admissions counselor for Stanford University. You provide detailed information about admission requirements, application process, deadlines, programs, campus culture, and financial aid. Stanford Requirements: GPA 3.9+, SAT 1470+, well-rounded profile, leadership experience, strong essays showing intellectual vitality. Application deadline: January 5th for Regular Decision, November 1st for Restrictive Early Action. Programs: Wide range from humanities to STEM. Acceptance rate ~4%. Be warm but honest about selectivity. Evaluate student readiness and provide constructive guidance. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
+    },
+    {
+        id: 'harvard',
+        name: 'Harvard Admissions',
+        x: 1000,
+        y: 350,
+        width: 48,
+        height: 48,
+        color: '#a51c30',
+        specialty: 'Harvard University',
+        type: 'university',
+        systemPrompt: 'You are an admissions counselor for Harvard University. You provide comprehensive information about admissions requirements, application process, deadlines, programs, and opportunities. Harvard Requirements: GPA 4.0+, SAT 1480+, exceptional extracurriculars, demonstrated leadership, compelling personal story, strong recommendations. Application deadline: January 1st for Regular Decision, November 1st for Early Action. Programs: Liberal Arts, Sciences, Engineering, Pre-Med, Business, Law. Holistic review process. Be professional and provide honest assessment of student\'s competitiveness. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
+    },
+    {
+        id: 'berkeley',
+        name: 'UC Berkeley Admissions',
+        x: 900,
+        y: 500,
+        width: 48,
+        height: 48,
+        color: '#003262',
+        specialty: 'UC Berkeley',
+        type: 'university',
+        systemPrompt: 'You are an admissions counselor for UC Berkeley. You provide information about UC application requirements, Personal Insight Questions, programs, and campus resources. UC Berkeley Requirements: GPA 3.9+ (UC GPA), strong coursework in A-G requirements, 4 Personal Insight Questions, no SAT/ACT required. Application deadline: November 30th. Programs: Engineering, Computer Science, Business (Haas), Sciences, Humanities. In-state preference but competitive out-of-state admissions. Be informative and assess fit based on academics and PIQs. IMPORTANT: Respond in plain conversational text only. Do NOT use markdown formatting, bullet points, asterisks, or special formatting. Write naturally as if speaking in a casual conversation.'
+    }
+];
+
+const npcs = [...professors, ...universities];
 
 // Input handling
 const keys = {};
@@ -81,16 +138,17 @@ window.addEventListener('keyup', (e) => {
     keys[e.key.toLowerCase()] = false;
 });
 
-// Check if player can interact with a professor
+// Check if player can interact with an NPC
 function checkProfessorInteraction() {
-    for (const prof of professors) {
+    for (const npc of npcs) {
         const distance = Math.sqrt(
-            Math.pow(player.x - prof.x, 2) +
-            Math.pow(player.y - prof.y, 2)
+            Math.pow(player.x - npc.x, 2) +
+            Math.pow(player.y - npc.y, 2)
         );
 
-        if (distance < 60) {
-            openDialog(prof);
+        const interactRadius = npc.type === 'university' ? 80 : 60;
+        if (distance < interactRadius) {
+            openDialog(npc);
             return;
         }
     }
@@ -105,16 +163,21 @@ let userProfile = {
     learningStyle: ''
 };
 
-// Conversation history per professor
+// Conversation history per NPC
 const conversationHistory = {
     cs: [],
     bio: [],
     eng: [],
-    arts: []
+    arts: [],
+    mit: [],
+    stanford: [],
+    harvard: [],
+    berkeley: []
 };
 
 // Certifications and skill tree
 let certifications = [];
+let goalSkills = [];
 
 function loadCertifications() {
     const saved = localStorage.getItem('studyVillageCertifications');
@@ -127,6 +190,18 @@ function loadCertifications() {
 
 function saveCertifications() {
     localStorage.setItem('studyVillageCertifications', JSON.stringify(certifications));
+}
+
+function loadGoalSkills() {
+    const saved = localStorage.getItem('studyVillageGoalSkills');
+    if (saved) {
+        goalSkills = JSON.parse(saved);
+        renderGoalSkills();
+    }
+}
+
+function saveGoalSkills() {
+    localStorage.setItem('studyVillageGoalSkills', JSON.stringify(goalSkills));
 }
 
 // Load profile from localStorage
@@ -199,22 +274,27 @@ const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 const closeBtn = document.getElementById('close-dialog');
 
-function openDialog(professor) {
-    currentProfessor = professor;
-    professorNameEl.textContent = `${professor.name} - ${professor.specialty}`;
+function openDialog(npc) {
+    currentProfessor = npc;
+    professorNameEl.textContent = `${npc.name} - ${npc.specialty}`;
     chatMessages.innerHTML = '';
 
-    // Restore conversation history for this professor
-    const history = conversationHistory[professor.id] || [];
+    // Restore conversation history for this NPC
+    const history = conversationHistory[npc.id] || [];
     if (history.length > 0) {
         history.forEach(msg => {
             addMessage(msg.role === 'user' ? 'user' : 'professor', msg.content);
         });
     } else {
         // Add welcome message only on first conversation
-        const welcomeMsg = `Hello${userProfile.name ? ' ' + userProfile.name : ''}! I'm ${professor.name}. I'd be happy to tell you about ${professor.specialty} programs and answer any questions you have about this field of study!`;
+        let welcomeMsg;
+        if (npc.type === 'university') {
+            welcomeMsg = `Welcome${userProfile.name ? ', ' + userProfile.name : ''}! I'm an admissions counselor for ${npc.specialty}. I can help you understand our admission requirements, application process, programs, and answer any questions about applying to our university!`;
+        } else {
+            welcomeMsg = `Hello${userProfile.name ? ' ' + userProfile.name : ''}! I'm ${npc.name}. I'd be happy to tell you about ${npc.specialty} programs and answer any questions you have about this field of study!`;
+        }
         addMessage('professor', welcomeMsg);
-        conversationHistory[professor.id].push({ role: 'assistant', content: welcomeMsg });
+        conversationHistory[npc.id].push({ role: 'assistant', content: welcomeMsg });
     }
 
     dialogBox.classList.remove('hidden');
@@ -274,7 +354,8 @@ async function sendMessage() {
                 systemPrompt: currentProfessor.systemPrompt,
                 userProfile: userProfile,
                 conversationHistory: conversationHistory[currentProfessor.id],
-                certifications: certifications
+                certifications: certifications,
+                goalSkills: goalSkills
             })
         });
 
@@ -338,52 +419,72 @@ function draw() {
         ctx.stroke();
     }
 
-    // Draw professors
-    professors.forEach(prof => {
+    // Draw all NPCs (professors and universities)
+    npcs.forEach(npc => {
         // Draw shadow
         ctx.fillStyle = 'rgba(0,0,0,0.2)';
-        ctx.fillRect(prof.x + 2, prof.y + prof.height + 2, prof.width, 4);
+        ctx.fillRect(npc.x + 2, npc.y + npc.height + 2, npc.width, 4);
 
-        // Draw professor
-        ctx.fillStyle = prof.color;
-        ctx.fillRect(prof.x, prof.y, prof.width, prof.height);
+        if (npc.type === 'university') {
+            // Draw university building
+            ctx.fillStyle = npc.color;
+            ctx.fillRect(npc.x, npc.y, npc.width, npc.height);
 
-        // Draw face
-        ctx.fillStyle = '#ffe0bd';
-        ctx.fillRect(prof.x + 8, prof.y + 8, 16, 16);
+            // Draw windows
+            ctx.fillStyle = '#ffe082';
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 2; j++) {
+                    ctx.fillRect(npc.x + 8 + (i * 12), npc.y + 10 + (j * 15), 8, 10);
+                }
+            }
 
-        // Draw eyes
-        ctx.fillStyle = '#000';
-        ctx.fillRect(prof.x + 10, prof.y + 12, 3, 3);
-        ctx.fillRect(prof.x + 19, prof.y + 12, 3, 3);
+            // Draw door
+            ctx.fillStyle = '#5d4037';
+            ctx.fillRect(npc.x + npc.width/2 - 6, npc.y + npc.height - 12, 12, 12);
+        } else {
+            // Draw professor
+            ctx.fillStyle = npc.color;
+            ctx.fillRect(npc.x, npc.y, npc.width, npc.height);
+
+            // Draw face
+            ctx.fillStyle = '#ffe0bd';
+            ctx.fillRect(npc.x + 8, npc.y + 8, 16, 16);
+
+            // Draw eyes
+            ctx.fillStyle = '#000';
+            ctx.fillRect(npc.x + 10, npc.y + 12, 3, 3);
+            ctx.fillRect(npc.x + 19, npc.y + 12, 3, 3);
+        }
 
         // Draw name tag
+        const tagWidth = npc.type === 'university' ? npc.width + 40 : npc.width + 20;
         ctx.fillStyle = 'rgba(0,0,0,0.7)';
-        ctx.fillRect(prof.x - 10, prof.y - 20, prof.width + 20, 16);
+        ctx.fillRect(npc.x - (tagWidth - npc.width)/2, npc.y - 20, tagWidth, 16);
         ctx.fillStyle = '#fff';
-        ctx.font = '10px Courier New';
+        ctx.font = npc.type === 'university' ? '9px Courier New' : '10px Courier New';
         ctx.textAlign = 'center';
-        ctx.fillText(prof.specialty, prof.x + prof.width/2, prof.y - 9);
+        ctx.fillText(npc.specialty, npc.x + npc.width/2, npc.y - 9);
 
         // Draw interaction radius if player is near
         const distance = Math.sqrt(
-            Math.pow(player.x - prof.x, 2) +
-            Math.pow(player.y - prof.y, 2)
+            Math.pow(player.x - npc.x, 2) +
+            Math.pow(player.y - npc.y, 2)
         );
-        if (distance < 60) {
+        const interactRadius = npc.type === 'university' ? 80 : 60;
+        if (distance < interactRadius) {
             ctx.strokeStyle = 'rgba(255,255,255,0.5)';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.arc(prof.x + prof.width/2, prof.y + prof.height/2, 60, 0, Math.PI * 2);
+            ctx.arc(npc.x + npc.width/2, npc.y + npc.height/2, interactRadius, 0, Math.PI * 2);
             ctx.stroke();
 
             // Draw "Press SPACE" indicator
             ctx.fillStyle = 'rgba(255,255,255,0.9)';
-            ctx.fillRect(prof.x - 20, prof.y + prof.height + 10, prof.width + 40, 16);
+            ctx.fillRect(npc.x - 20, npc.y + npc.height + 10, npc.width + 40, 16);
             ctx.fillStyle = '#000';
             ctx.font = 'bold 10px Courier New';
             ctx.textAlign = 'center';
-            ctx.fillText('Press SPACE', prof.x + prof.width/2, prof.y + prof.height + 21);
+            ctx.fillText('Press SPACE', npc.x + npc.width/2, npc.y + npc.height + 21);
         }
     });
 
@@ -421,6 +522,10 @@ const certIssuerInput = document.getElementById('cert-issuer');
 const certCategorySelect = document.getElementById('cert-category');
 const addCertBtn = document.getElementById('add-cert-btn');
 const certList = document.getElementById('cert-list');
+const goalSkillTitleInput = document.getElementById('goal-skill-title');
+const goalSkillCategorySelect = document.getElementById('goal-skill-category');
+const addGoalSkillBtn = document.getElementById('add-goal-skill-btn');
+const goalSkillList = document.getElementById('goal-skill-list');
 const skillTreeCanvas = document.getElementById('skill-tree-canvas');
 const skillTreeCtx = skillTreeCanvas.getContext('2d');
 
@@ -490,6 +595,31 @@ addCertBtn.addEventListener('click', () => {
     certCategorySelect.value = '';
 });
 
+// Add goal skill
+addGoalSkillBtn.addEventListener('click', () => {
+    const title = goalSkillTitleInput.value.trim();
+    const category = goalSkillCategorySelect.value;
+
+    if (!title || !category) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    const goalSkill = {
+        id: Date.now(),
+        title,
+        category,
+        dateAdded: new Date().toISOString()
+    };
+
+    goalSkills.push(goalSkill);
+    saveGoalSkills();
+    renderGoalSkills();
+
+    goalSkillTitleInput.value = '';
+    goalSkillCategorySelect.value = '';
+});
+
 // Render certifications list
 function renderCertifications() {
     certList.innerHTML = '';
@@ -529,35 +659,77 @@ function renderCertifications() {
     });
 }
 
+// Render goal skills list
+function renderGoalSkills() {
+    goalSkillList.innerHTML = '';
+
+    if (goalSkills.length === 0) {
+        goalSkillList.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">No learning goals yet. Add skills you want to learn above!</p>';
+        return;
+    }
+
+    goalSkills.forEach(skill => {
+        const skillItem = document.createElement('div');
+        skillItem.className = 'goal-skill-item';
+
+        skillItem.innerHTML = `
+            <div class="cert-info">
+                <div class="cert-title">🎯 ${skill.title}</div>
+                <div class="cert-details">
+                    Goal to learn
+                    <span class="cert-category">${skill.category}</span>
+                </div>
+            </div>
+            <button class="goal-skill-remove" data-id="${skill.id}">Remove</button>
+        `;
+
+        goalSkillList.appendChild(skillItem);
+    });
+
+    // Add remove handlers
+    document.querySelectorAll('.goal-skill-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            goalSkills = goalSkills.filter(s => s.id !== id);
+            saveGoalSkills();
+            renderGoalSkills();
+        });
+    });
+}
+
+// Common prerequisite/bridge skills knowledge base
+const skillPrerequisites = {
+    'Machine Learning': ['Python Programming', 'Statistics', 'Linear Algebra'],
+    'Deep Learning': ['Machine Learning', 'Python Programming', 'Calculus'],
+    'Data Science': ['Python Programming', 'Statistics', 'SQL'],
+    'Web Development': ['HTML/CSS', 'JavaScript'],
+    'Backend Development': ['Programming Fundamentals', 'Database Design'],
+    'Mobile Development': ['Programming Fundamentals', 'UI/UX Basics'],
+    'Game Development': ['Programming Fundamentals', 'Math/Physics'],
+    'Cybersecurity': ['Networking Basics', 'Operating Systems'],
+    'Cloud Computing': ['Linux', 'Networking Basics'],
+    'DevOps': ['Linux', 'Programming Fundamentals', 'Cloud Computing']
+};
+
 // Render skill tree
 function renderSkillTree() {
     if (!skillTreeCanvas) return;
 
-    const width = 800;
-    const height = 600;
+    const width = 1200;
+    const height = 800;
     skillTreeCanvas.width = width;
     skillTreeCanvas.height = height;
 
     skillTreeCtx.clearRect(0, 0, width, height);
 
-    if (certifications.length === 0) {
+    if (certifications.length === 0 && goalSkills.length === 0) {
         skillTreeCtx.fillStyle = '#999';
         skillTreeCtx.font = '16px Courier New';
         skillTreeCtx.textAlign = 'center';
-        skillTreeCtx.fillText('Add certifications to build your skill tree!', width/2, height/2);
+        skillTreeCtx.fillText('Add certifications and learning goals to build your skill tree!', width/2, height/2);
         return;
     }
 
-    // Group by category
-    const grouped = {};
-    certifications.forEach(cert => {
-        if (!grouped[cert.category]) {
-            grouped[cert.category] = [];
-        }
-        grouped[cert.category].push(cert);
-    });
-
-    const categories = Object.keys(grouped);
     const categoryColors = {
         programming: '#2196f3',
         math: '#ff9800',
@@ -568,77 +740,215 @@ function renderSkillTree() {
         other: '#757575'
     };
 
-    // Draw tree structure
-    const nodeRadius = 40;
-    const levelHeight = 120;
-    const startY = 80;
+    // Build complete skill tree with three layers
+    const allNodes = [];
+    const nodeRadius = 35;
+    const layerSpacing = 200;
+    const nodeSpacing = 150;
 
-    categories.forEach((category, catIndex) => {
-        const certs = grouped[category];
-        const color = categoryColors[category] || categoryColors.other;
+    // Layer 1: Current Skills (certifications)
+    let layer1Y = 100;
+    certifications.forEach((cert, index) => {
+        allNodes.push({
+            title: cert.title,
+            category: cert.category,
+            type: 'current',
+            x: 150 + (index * nodeSpacing),
+            y: layer1Y,
+            color: categoryColors[cert.category] || categoryColors.other
+        });
+    });
 
-        certs.forEach((cert, certIndex) => {
-            const x = (width / (certs.length + 1)) * (certIndex + 1);
-            const y = startY + (catIndex * levelHeight);
+    // Calculate bridge skills needed
+    const bridgeSkills = new Set();
+    goalSkills.forEach(goal => {
+        // Try exact match first, then partial match
+        let prereqs = skillPrerequisites[goal.title];
 
-            // Draw connections to previous level
-            if (catIndex > 0) {
-                const prevCategory = categories[catIndex - 1];
-                const prevCerts = grouped[prevCategory];
-                prevCerts.forEach((prevCert, prevIndex) => {
-                    const prevX = (width / (prevCerts.length + 1)) * (prevIndex + 1);
-                    const prevY = startY + ((catIndex - 1) * levelHeight);
-
-                    skillTreeCtx.strokeStyle = '#ddd';
-                    skillTreeCtx.lineWidth = 2;
-                    skillTreeCtx.beginPath();
-                    skillTreeCtx.moveTo(prevX, prevY + nodeRadius);
-                    skillTreeCtx.lineTo(x, y - nodeRadius);
-                    skillTreeCtx.stroke();
-                });
+        // If no exact match, try to find a partial match in the keys
+        if (!prereqs) {
+            const matchingKey = Object.keys(skillPrerequisites).find(key =>
+                goal.title.toLowerCase().includes(key.toLowerCase()) ||
+                key.toLowerCase().includes(goal.title.toLowerCase())
+            );
+            if (matchingKey) {
+                prereqs = skillPrerequisites[matchingKey];
             }
+        }
 
-            // Draw node
-            skillTreeCtx.fillStyle = color;
+        if (prereqs && prereqs.length > 0) {
+            prereqs.forEach(prereq => {
+                // Only add if student doesn't already have it
+                const hasSkill = certifications.some(cert =>
+                    cert.title.toLowerCase().includes(prereq.toLowerCase()) ||
+                    prereq.toLowerCase().includes(cert.title.toLowerCase())
+                );
+                if (!hasSkill) {
+                    bridgeSkills.add(prereq);
+                }
+            });
+        }
+    });
+
+    // Layer 2: Bridge Skills (needed prerequisites)
+    let layer2Y = layer1Y + layerSpacing;
+    const bridgeArray = Array.from(bridgeSkills);
+    bridgeArray.forEach((skill, index) => {
+        // Find category based on skill name
+        let category = 'other';
+        if (skill.toLowerCase().includes('python') || skill.toLowerCase().includes('programming') || skill.toLowerCase().includes('javascript')) {
+            category = 'programming';
+        } else if (skill.toLowerCase().includes('math') || skill.toLowerCase().includes('calculus') || skill.toLowerCase().includes('algebra') || skill.toLowerCase().includes('statistics')) {
+            category = 'math';
+        } else if (skill.toLowerCase().includes('design') || skill.toLowerCase().includes('ui')) {
+            category = 'design';
+        }
+
+        allNodes.push({
+            title: skill,
+            category: category,
+            type: 'bridge',
+            x: 150 + (index * nodeSpacing),
+            y: layer2Y,
+            color: categoryColors[category] || categoryColors.other
+        });
+    });
+
+    // Layer 3: Goal Skills
+    let layer3Y = layer2Y + layerSpacing;
+    goalSkills.forEach((goal, index) => {
+        allNodes.push({
+            title: goal.title,
+            category: goal.category,
+            type: 'goal',
+            x: 150 + (index * nodeSpacing),
+            y: layer3Y,
+            color: categoryColors[goal.category] || categoryColors.other
+        });
+    });
+
+    // Draw connections
+    allNodes.forEach(node => {
+        if (node.type === 'bridge') {
+            // Connect to current skills
+            allNodes.filter(n => n.type === 'current').forEach(currentNode => {
+                skillTreeCtx.strokeStyle = '#90caf9';
+                skillTreeCtx.lineWidth = 2;
+                skillTreeCtx.setLineDash([5, 5]);
+                skillTreeCtx.beginPath();
+                skillTreeCtx.moveTo(currentNode.x, currentNode.y + nodeRadius);
+                skillTreeCtx.lineTo(node.x, node.y - nodeRadius);
+                skillTreeCtx.stroke();
+                skillTreeCtx.setLineDash([]);
+            });
+        }
+        if (node.type === 'goal') {
+            // Connect to bridge skills or current skills
+            const bridgeNodes = allNodes.filter(n => n.type === 'bridge');
+            const connectTo = bridgeNodes.length > 0 ? bridgeNodes : allNodes.filter(n => n.type === 'current');
+
+            connectTo.forEach(prevNode => {
+                skillTreeCtx.strokeStyle = '#ffcc80';
+                skillTreeCtx.lineWidth = 2;
+                skillTreeCtx.setLineDash([10, 5]);
+                skillTreeCtx.beginPath();
+                skillTreeCtx.moveTo(prevNode.x, prevNode.y + nodeRadius);
+                skillTreeCtx.lineTo(node.x, node.y - nodeRadius);
+                skillTreeCtx.stroke();
+                skillTreeCtx.setLineDash([]);
+            });
+        }
+    });
+
+    // Draw all nodes
+    allNodes.forEach(node => {
+        const x = node.x;
+        const y = node.y;
+
+        // Draw node based on type
+        if (node.type === 'current') {
+            // Solid filled circle for current skills
+            skillTreeCtx.fillStyle = node.color;
             skillTreeCtx.beginPath();
             skillTreeCtx.arc(x, y, nodeRadius, 0, Math.PI * 2);
             skillTreeCtx.fill();
-
             skillTreeCtx.strokeStyle = '#000';
             skillTreeCtx.lineWidth = 3;
             skillTreeCtx.stroke();
 
-            // Draw category icon/letter
+            // Checkmark
             skillTreeCtx.fillStyle = '#fff';
-            skillTreeCtx.font = 'bold 16px Courier New';
+            skillTreeCtx.font = 'bold 24px Courier New';
             skillTreeCtx.textAlign = 'center';
             skillTreeCtx.textBaseline = 'middle';
-            skillTreeCtx.fillText(category.substring(0, 3).toUpperCase(), x, y - 5);
+            skillTreeCtx.fillText('✓', x, y);
+        } else if (node.type === 'bridge') {
+            // Dashed outline for bridge skills
+            skillTreeCtx.fillStyle = '#fff';
+            skillTreeCtx.beginPath();
+            skillTreeCtx.arc(x, y, nodeRadius, 0, Math.PI * 2);
+            skillTreeCtx.fill();
+            skillTreeCtx.strokeStyle = node.color;
+            skillTreeCtx.lineWidth = 4;
+            skillTreeCtx.setLineDash([8, 4]);
+            skillTreeCtx.stroke();
+            skillTreeCtx.setLineDash([]);
 
-            // Draw cert count
-            skillTreeCtx.font = '12px Courier New';
-            skillTreeCtx.fillText(`#${certIndex + 1}`, x, y + 10);
+            // Arrow icon
+            skillTreeCtx.fillStyle = node.color;
+            skillTreeCtx.font = 'bold 20px Courier New';
+            skillTreeCtx.textAlign = 'center';
+            skillTreeCtx.textBaseline = 'middle';
+            skillTreeCtx.fillText('→', x, y);
+        } else if (node.type === 'goal') {
+            // Dotted outline for goals
+            skillTreeCtx.fillStyle = '#fffde7';
+            skillTreeCtx.beginPath();
+            skillTreeCtx.arc(x, y, nodeRadius, 0, Math.PI * 2);
+            skillTreeCtx.fill();
+            skillTreeCtx.strokeStyle = node.color;
+            skillTreeCtx.lineWidth = 4;
+            skillTreeCtx.setLineDash([4, 4]);
+            skillTreeCtx.stroke();
+            skillTreeCtx.setLineDash([]);
 
-            // Draw title below node
-            skillTreeCtx.fillStyle = '#333';
-            skillTreeCtx.font = '11px Courier New';
-            const titleWords = cert.title.split(' ');
-            let line = '';
-            let lineY = y + nodeRadius + 15;
+            // Star icon
+            skillTreeCtx.fillStyle = node.color;
+            skillTreeCtx.font = 'bold 22px Courier New';
+            skillTreeCtx.textAlign = 'center';
+            skillTreeCtx.textBaseline = 'middle';
+            skillTreeCtx.fillText('★', x, y);
+        }
 
-            titleWords.forEach((word, i) => {
-                const testLine = line + word + ' ';
-                const metrics = skillTreeCtx.measureText(testLine);
-                if (metrics.width > 80 && i > 0) {
-                    skillTreeCtx.fillText(line.trim(), x, lineY);
-                    line = word + ' ';
-                    lineY += 12;
-                } else {
-                    line = testLine;
-                }
-            });
-            skillTreeCtx.fillText(line.trim(), x, lineY);
+        // Draw title below node
+        skillTreeCtx.fillStyle = '#333';
+        skillTreeCtx.font = 'bold 11px Courier New';
+        skillTreeCtx.textAlign = 'center';
+        const titleWords = node.title.split(' ');
+        let line = '';
+        let lineY = y + nodeRadius + 15;
+
+        titleWords.forEach((word, i) => {
+            const testLine = line + word + ' ';
+            const metrics = skillTreeCtx.measureText(testLine);
+            if (metrics.width > 100 && i > 0) {
+                skillTreeCtx.fillText(line.trim(), x, lineY);
+                line = word + ' ';
+                lineY += 13;
+            } else {
+                line = testLine;
+            }
         });
+        skillTreeCtx.fillText(line.trim(), x, lineY);
+
+        // Draw type label
+        skillTreeCtx.font = '9px Courier New';
+        skillTreeCtx.fillStyle = '#666';
+        let typeLabel = '';
+        if (node.type === 'current') typeLabel = 'HAVE';
+        if (node.type === 'bridge') typeLabel = 'NEED';
+        if (node.type === 'goal') typeLabel = 'WANT';
+        skillTreeCtx.fillText(typeLabel, x, y - nodeRadius - 8);
     });
 }
 
@@ -652,4 +962,5 @@ function gameLoop() {
 // Initialize
 loadProfile();
 loadCertifications();
+loadGoalSkills();
 gameLoop();

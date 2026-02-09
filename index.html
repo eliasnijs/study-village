@@ -110,6 +110,27 @@
                             <h3>Your Certifications & Skills</h3>
                             <div id="cert-list"></div>
                         </div>
+
+                        <div class="inventory-section" style="margin-top: 20px;">
+                            <h3>Skills I Want to Learn</h3>
+                            <input type="text" id="goal-skill-title" placeholder="e.g., Machine Learning, Public Speaking">
+                            <select id="goal-skill-category">
+                                <option value="">Select Category...</option>
+                                <option value="programming">Programming</option>
+                                <option value="math">Mathematics</option>
+                                <option value="science">Science</option>
+                                <option value="design">Design</option>
+                                <option value="business">Business</option>
+                                <option value="language">Language</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <button id="add-goal-skill-btn">Add to Goals</button>
+                        </div>
+
+                        <div class="inventory-list">
+                            <h3>Learning Goals</h3>
+                            <div id="goal-skill-list"></div>
+                        </div>
                     </div>
 
                     <div id="tree-tab" class="tab-content">
@@ -117,8 +138,21 @@
                             <canvas id="skill-tree-canvas"></canvas>
                         </div>
                         <div id="skill-tree-legend">
-                            <p><strong>Your skill tree is automatically built from your certifications!</strong></p>
-                            <p>Add certifications in the Inventory tab to grow your tree.</p>
+                            <p><strong>Your skill tree shows your learning journey:</strong></p>
+                            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 30px; height: 30px; background: #2196f3; border-radius: 50%; border: 3px solid #000; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">✓</div>
+                                    <span><strong>HAVE</strong> - Skills you already have</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 30px; height: 30px; background: white; border-radius: 50%; border: 3px dashed #ff9800; display: flex; align-items: center; justify-content: center; color: #ff9800; font-weight: bold;">→</div>
+                                    <span><strong>NEED</strong> - Prerequisites to learn</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 30px; height: 30px; background: #fffde7; border-radius: 50%; border: 3px dotted #9c27b0; display: flex; align-items: center; justify-content: center; color: #9c27b0; font-weight: bold;">★</div>
+                                    <span><strong>WANT</strong> - Your learning goals</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
